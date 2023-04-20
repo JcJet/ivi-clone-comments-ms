@@ -18,13 +18,11 @@ export class CommentsService {
   }
 
   async editComment(id: number, dto: CommentaryDto): Promise<any> {
-    const commentUpdateResult = await this.commentsRepository.update(id, dto);
-    return commentUpdateResult;
+    return await this.commentsRepository.update(id, dto);
   }
 
   async deleteComment(id: number): Promise<any> {
-    const commentDeleteResult = await this.commentsRepository.delete(id);
-    return commentDeleteResult;
+    return await this.commentsRepository.delete(id);
   }
 
   async getComments(dto: GetCommentaryDto) {
@@ -37,14 +35,14 @@ export class CommentsService {
   }
 
   async deleteCommentsFromEssence(
-    essenceTable: string,
-    essenceId: number,
+    dto: GetCommentaryDto,
   ): Promise<Commentary[]> {
+    //TODO: test it
     const deleteResult = await this.commentsRepository
-      .createQueryBuilder()
+      .createQueryBuilder('comments')
       .delete()
-      .where('essenceTable = :table', { essenceTable })
-      .andWhere('essenceId = :id', { essenceId })
+      .where('comments.essenceTable = :essenceTable', dto)
+      .andWhere('comments.essenceId = :essenceId', dto)
       .returning('*')
       .execute();
     return deleteResult.raw[0];
