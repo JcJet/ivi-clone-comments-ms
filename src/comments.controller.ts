@@ -9,26 +9,26 @@ import { GetCommentaryDto } from './dto/getCommentary.dto';
 export class CommentsController {
   constructor(private readonly commentsService: CommentsService) {}
 
-  @MessagePattern('create_comment')
+  @MessagePattern('createComment')
   async createComment(
     @Payload() data: { dto: CommentaryDto },
   ): Promise<Commentary> {
     return await this.commentsService.createComment(data.dto);
   }
 
-  @MessagePattern('delete_comment')
+  @MessagePattern('deleteComment')
   async deleteComment(@Payload() data: { id: number }): Promise<any> {
     return await this.commentsService.deleteComment(data.id);
   }
 
-  @MessagePattern('edit_comment')
+  @MessagePattern('editComment')
   async editComment(
     @Payload() data: { id: number; dto: CommentaryDto },
   ): Promise<any> {
     return await this.commentsService.editComment(data.id, data.dto);
   }
 
-  @MessagePattern('get_comments')
+  @MessagePattern('getComments')
   async getComments(
     @Payload() data: { dto: GetCommentaryDto },
   ): Promise<Commentary[]> {

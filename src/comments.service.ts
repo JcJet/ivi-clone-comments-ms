@@ -1,9 +1,9 @@
-import { Injectable } from "@nestjs/common";
-import { InjectRepository } from "@nestjs/typeorm";
-import { Repository } from "typeorm";
-import { Commentary } from "./comments.entity";
-import { CommentaryDto } from "./dto/commentary.dto";
-import { GetCommentaryDto } from "./dto/getCommentary.dto";
+import { Injectable } from '@nestjs/common';
+import { InjectRepository } from '@nestjs/typeorm';
+import { Repository } from 'typeorm';
+import { Commentary } from './comments.entity';
+import { CommentaryDto } from './dto/commentary.dto';
+import { GetCommentaryDto } from './dto/getCommentary.dto';
 
 @Injectable()
 export class CommentsService {
@@ -12,7 +12,6 @@ export class CommentsService {
     private commentsRepository: Repository<Commentary>,
   ) {}
   async createComment(dto: CommentaryDto): Promise<Commentary> {
-    //const commentInsertResult = await this.commentsRepository.insert(dto);
     const commentInsertResult = await this.commentsRepository.insert(dto);
     return commentInsertResult.raw[0];
   }
