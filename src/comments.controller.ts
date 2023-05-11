@@ -34,4 +34,14 @@ export class CommentsController {
   ): Promise<Commentary[]> {
     return await this.commentsService.getComments(data.dto);
   }
+  @MessagePattern('getCommentsTree')
+  async getCommentsTree(
+    @Payload() data: { dto: GetCommentaryDto },
+  ) {
+    let comments = await this.commentsService.getComments(data.dto);
+    for (let comment of comments) {
+      //TODO: сделать рекурсивно
+    }
+    //const comments: await this.commentsService.getComments({essenceTable: comments, essenceId: rootComment.id});
+  }
 }

@@ -9,7 +9,7 @@ export class Commentary {
 
   @ApiProperty({ example: '1', description: 'Идентификатор автора' })
   @Column({ type: 'numeric' })
-  authorId: number;
+  userId: number;
 
   @ApiProperty({ example: 'любой текст', description: 'текст комментария' })
   @Column({ type: 'text', default: '' })
