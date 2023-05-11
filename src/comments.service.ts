@@ -28,8 +28,8 @@ export class CommentsService {
     //const all = await this.commentsRepository.find();
     return await this.commentsRepository
       .createQueryBuilder('comments')
-      .where('comments.essenceTable = :essenceTable', dto)
-      .andWhere('comments.essenceId = :essenceId', dto)
+      .where('ivi-clone-comments-ms.essenceTable = :essenceTable', dto)
+      .andWhere('ivi-clone-comments-ms.essenceId = :essenceId', dto)
       .getMany();
   }
 
@@ -40,8 +40,8 @@ export class CommentsService {
     const deleteResult = await this.commentsRepository
       .createQueryBuilder('comments')
       .delete()
-      .where('comments.essenceTable = :essenceTable', dto)
-      .andWhere('comments.essenceId = :essenceId', dto)
+      .where('ivi-clone-comments-ms.essenceTable = :essenceTable', dto)
+      .andWhere('ivi-clone-comments-ms.essenceId = :essenceId', dto)
       .returning('*')
       .execute();
     return deleteResult.raw[0];

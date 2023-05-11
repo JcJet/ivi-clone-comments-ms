@@ -42,6 +42,6 @@ export class CommentsController {
     for (let comment of comments) {
       //TODO: сделать рекурсивно
     }
-    //const comments: await this.commentsService.getComments({essenceTable: comments, essenceId: rootComment.id});
+    //const ivi-clone-comments-ms: await this.commentsService.getComments({essenceTable: ivi-clone-comments-ms, essenceId: rootComment.id});
   }
 }
