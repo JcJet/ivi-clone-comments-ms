@@ -20,6 +20,10 @@ export class CommentsController {
   async deleteComment(@Payload() data: { id: number }): Promise<any> {
     return await this.commentsService.deleteComment(data.id);
   }
+  @MessagePattern('deleteCommentsFromEssence')
+  async deleteCommentsFromEssence(@Payload() data: { dto: CommentaryDto }) {
+    return await this.commentsService.deleteCommentsFromEssence(data.dto);
+  }
 
   @MessagePattern('editComment')
   async editComment(

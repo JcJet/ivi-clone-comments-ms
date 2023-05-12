@@ -25,17 +25,15 @@ export class CommentsService {
   }
 
   async getComments(dto: GetCommentaryDto) {
-    //const all = await this.commentsRepository.find();
-    return await this.commentsRepository
-      .createQueryBuilder('comments')
-      .where('comments.essenceTable = :essenceTable', dto)
-      .andWhere('comments.essenceId = :essenceId', dto)
-      .getMany();
+    return await this.commentsRepository.find({ where: { ...dto } });
   }
 
   async getNestedComments(comments: Commentary[]) {
     for (const comment of comments) {
-      const nestedComments = await this.getComments({essenceTable: 'comments', essenceId: comment.id})
+      const nestedComments = await this.getComments({
+        essenceTable: 'comments',
+        essenceId: comment.id,
+      });
       comment['comments'] = nestedComments;
       if (nestedComments.length != 0) {
         await this.getNestedComments(nestedComments);
@@ -48,17 +46,8 @@ export class CommentsService {
     const rootComments = await this.getComments(dto);
     return await this.getNestedComments(rootComments);
   }
-  async deleteCommentsFromEssence(
-    dto: GetCommentaryDto,
-  ): Promise<Commentary[]> {
+  async deleteCommentsFromEssence(dto: GetCommentaryDto) {
     //TODO: test it
-    const deleteResult = await this.commentsRepository
-      .createQueryBuilder('comments')
-      .delete()
-      .where('comments.essenceTable = :essenceTable', dto)
-      .andWhere('comments.essenceId = :essenceId', dto)
-      .returning('*')
-      .execute();
-    return deleteResult.raw[0];
+    return await this.commentsRepository.delete({ ...dto });
   }
 }
