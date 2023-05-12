@@ -35,13 +35,7 @@ export class CommentsController {
     return await this.commentsService.getComments(data.dto);
   }
   @MessagePattern('getCommentsTree')
-  async getCommentsTree(
-    @Payload() data: { dto: GetCommentaryDto },
-  ) {
-    let comments = await this.commentsService.getComments(data.dto);
-    for (let comment of comments) {
-      //TODO: сделать рекурсивно
-    }
-    //const ivi-clone-comments-ms: await this.commentsService.getComments({essenceTable: ivi-clone-comments-ms, essenceId: rootComment.id});
+  async getCommentsTree(@Payload() data: { dto: GetCommentaryDto }) {
+    return await this.commentsService.getCommentsTree(data.dto);
   }
 }

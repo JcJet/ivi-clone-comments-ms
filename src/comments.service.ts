@@ -28,11 +28,26 @@ export class CommentsService {
     //const all = await this.commentsRepository.find();
     return await this.commentsRepository
       .createQueryBuilder('comments')
-      .where('ivi-clone-comments-ms.essenceTable = :essenceTable', dto)
-      .andWhere('ivi-clone-comments-ms.essenceId = :essenceId', dto)
+      .where('comments.essenceTable = :essenceTable', dto)
+      .andWhere('comments.essenceId = :essenceId', dto)
       .getMany();
   }
 
+  async getNestedComments(comments: Commentary[]) {
+    for (const comment of comments) {
+      const nestedComments = await this.getComments({essenceTable: 'comments', essenceId: comment.id})
+      comment['comments'] = nestedComments;
+      if (nestedComments.length != 0) {
+        await this.getNestedComments(nestedComments);
+      }
+    }
+    return comments;
+  }
+  // Получение комментариев с комментариями на них самих
+  async getCommentsTree(dto: GetCommentaryDto) {
+    const rootComments = await this.getComments(dto);
+    return await this.getNestedComments(rootComments);
+  }
   async deleteCommentsFromEssence(
     dto: GetCommentaryDto,
   ): Promise<Commentary[]> {
@@ -40,8 +55,8 @@ export class CommentsService {
     const deleteResult = await this.commentsRepository
       .createQueryBuilder('comments')
       .delete()
-      .where('ivi-clone-comments-ms.essenceTable = :essenceTable', dto)
-      .andWhere('ivi-clone-comments-ms.essenceId = :essenceId', dto)
+      .where('comments.essenceTable = :essenceTable', dto)
+      .andWhere('comments.essenceId = :essenceId', dto)
       .returning('*')
       .execute();
     return deleteResult.raw[0];
