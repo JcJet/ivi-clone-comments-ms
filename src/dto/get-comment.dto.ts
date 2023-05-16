@@ -1,4 +1,4 @@
-export class GetCommentaryDto {
+export class GetCommentDto {
   readonly essenceTable: string;
   readonly essenceId: number;
 }

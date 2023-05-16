@@ -11,25 +11,32 @@ export class Commentary {
   @Column({ type: 'numeric' })
   userId: number;
 
-  @ApiProperty({ example: 'любой текст', description: 'текст комментария' })
+  @ApiProperty({ example: 'любой текст', description: 'Текст комментария' })
   @Column({ type: 'text', default: '' })
   text: string;
 
-  @ApiProperty({ example: '1', description: 'количество лайков' })
+  @ApiProperty({ example: '1', description: 'Толичество лайков' })
   @Column({ type: 'numeric', default: 0 })
   likes: number;
 
   @ApiProperty({
-    example: 'movie',
-    description: 'название сущности, к которой относится комментарий',
+    example: 'movies',
+    description: 'Название сущности, к которой относится комментарий',
   })
   @Column({ type: 'varchar', length: 255 })
   essenceTable: string;
 
   @ApiProperty({
     example: '1',
-    description: 'id элемента, к которому относится комментарий',
+    description: 'Идентификатор элемента, к которому относится комментарий',
   })
   @Column({ type: 'numeric' })
   essenceId: number;
+
+  @ApiProperty({
+    example: '2019-04-23T18:25:43.511Z',
+    description: 'Дата создания комментария',
+  })
+  @Column({ type: 'date', nullable: true })
+  creationDate: Date;
 }

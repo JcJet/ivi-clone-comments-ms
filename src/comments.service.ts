@@ -3,7 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { Commentary } from './comments.entity';
 import { CommentaryDto } from './dto/commentary.dto';
-import { GetCommentaryDto } from './dto/getCommentary.dto';
+import { GetCommentDto } from './dto/get-comment.dto';
 
 @Injectable()
 export class CommentsService {
@@ -24,7 +24,7 @@ export class CommentsService {
     return await this.commentsRepository.delete(id);
   }
 
-  async getComments(dto: GetCommentaryDto) {
+  async getComments(dto: GetCommentDto) {
     return await this.commentsRepository.find({ where: { ...dto } });
   }
 
@@ -42,11 +42,11 @@ export class CommentsService {
     return comments;
   }
   // Получение комментариев с комментариями на них самих
-  async getCommentsTree(dto: GetCommentaryDto) {
+  async getCommentsTree(dto: GetCommentDto) {
     const rootComments = await this.getComments(dto);
     return await this.getNestedComments(rootComments);
   }
-  async deleteCommentsFromEssence(dto: GetCommentaryDto) {
+  async deleteCommentsFromEssence(dto: GetCommentDto) {
     //TODO: test it
     return await this.commentsRepository.delete({ ...dto });
   }
