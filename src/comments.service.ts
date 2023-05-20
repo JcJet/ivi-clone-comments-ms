@@ -21,6 +21,10 @@ export class CommentsService {
   }
 
   async deleteComment(id: number): Promise<any> {
+    await this.deleteCommentsFromEssence({
+      essenceTable: 'comments',
+      essenceId: id,
+    });
     return await this.commentsRepository.delete(id);
   }
 
@@ -28,7 +32,7 @@ export class CommentsService {
     return await this.commentsRepository.find({ where: { ...dto } });
   }
 
-  async getNestedComments(comments: Commentary[]) {
+  async getNestedComments(comments: Commentary[], deleteFoundComments = false) {
     for (const comment of comments) {
       const nestedComments = await this.getComments({
         essenceTable: 'comments',
@@ -37,6 +41,9 @@ export class CommentsService {
       comment['comments'] = nestedComments;
       if (nestedComments.length != 0) {
         await this.getNestedComments(nestedComments);
+      }
+      if (deleteFoundComments) {
+        await this.commentsRepository.delete(comment.id);
       }
     }
     return comments;
@@ -48,6 +55,9 @@ export class CommentsService {
   }
   async deleteCommentsFromEssence(dto: GetCommentDto) {
     //TODO: test it
-    return await this.commentsRepository.delete({ ...dto });
+    const rootComments = await this.getComments(dto);
+    const deletedComments = this.getNestedComments(rootComments, true);
+    await this.commentsRepository.delete({ ...dto });
+    return deletedComments;
   }
 }
