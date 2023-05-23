@@ -1,22 +1,28 @@
-import { Injectable } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
-import { Commentary } from './comments.entity';
-import { CommentaryDto } from './dto/commentary.dto';
-import { GetCommentDto } from './dto/get-comment.dto';
+import {Inject, Injectable} from '@nestjs/common';
+import {InjectRepository} from '@nestjs/typeorm';
+import {Repository} from 'typeorm';
+import {Commentary} from './comments.entity';
+import {CommentaryDto} from './dto/commentary.dto';
+import {GetCommentDto} from './dto/get-comment.dto';
+import {ClientProxy} from '@nestjs/microservices';
+import {lastValueFrom} from "rxjs";
 
 @Injectable()
 export class CommentsService {
   constructor(
     @InjectRepository(Commentary)
     private commentsRepository: Repository<Commentary>,
+    @Inject('TO_PROFILES_MS') private toProfilesProxy: ClientProxy,
   ) {}
   async createComment(dto: CommentaryDto): Promise<Commentary> {
+    dto['userId'] = dto.author.userId;
     const commentInsertResult = await this.commentsRepository.insert(dto);
     return commentInsertResult.raw[0];
   }
 
   async editComment(id: number, dto: CommentaryDto): Promise<any> {
+    dto['userId'] = dto.author.userId;
+    delete dto.author;
     return await this.commentsRepository.update(id, dto);
   }
 
@@ -29,16 +35,38 @@ export class CommentsService {
   }
 
   async getComments(dto: GetCommentDto) {
-    return await this.commentsRepository.find({ where: { ...dto } });
+    const comments = await this.commentsRepository.find({ where: { ...dto } });
+    for (const comment of comments) {
+      comment['author'] = await this.getCommentAuthor(comment);
+    }
+    return comments;
   }
-
-  async getNestedComments(comments: Commentary[], deleteFoundComments = false) {
+  async getCommentAuthor(comment: Commentary) {
+    const profileAuthor = await lastValueFrom(
+      this.toProfilesProxy.send(
+        { cmd: 'getProfileByUserId' },
+        { userId: comment.userId },
+      ),
+    );
+    return {
+      userId: comment.userId,
+      name: `${profileAuthor?.firstName} ${profileAuthor?.lastName}`,
+    };
+  }
+  async getNestedComments(
+    comments: Commentary[],
+    deleteFoundComments = false,
+    addAuthorFields = true,
+  ) {
     for (const comment of comments) {
       const nestedComments = await this.getComments({
         essenceTable: 'comments',
         essenceId: comment.id,
       });
       comment['comments'] = nestedComments;
+      if (addAuthorFields) {
+        comment['author'] = await this.getCommentAuthor(comment);
+      }
       if (nestedComments.length != 0) {
         await this.getNestedComments(nestedComments);
       }

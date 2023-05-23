@@ -4,6 +4,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { CommentsController } from './comments.controller';
 import { Commentary } from './comments.entity';
 import { CommentsService } from './comments.service';
+import {ClientsModule, Transport} from "@nestjs/microservices";
 
 @Module({
   imports: [
@@ -46,6 +47,23 @@ import { CommentsService } from './comments.service';
       synchronize: true,
     }),
     TypeOrmModule.forFeature([Commentary]),
+    ClientsModule.registerAsync([
+      {
+        name: 'TO_PROFILES_MS',
+        useFactory: (configService: ConfigService) => ({
+          transport: Transport.RMQ,
+          options: {
+            urls: [configService.get<string>('RMQ_URL')],
+            queue: 'toProfilesMs',
+            queueOptions: {
+              durable: false,
+            },
+          },
+        }),
+        inject: [ConfigService],
+        imports: [ConfigModule],
+      },
+    ]),
   ],
   controllers: [CommentsController],
   providers: [CommentsService],

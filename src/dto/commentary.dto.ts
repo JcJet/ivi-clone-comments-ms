@@ -1,7 +1,10 @@
 export class CommentaryDto {
-  readonly userId: number;
+  author: {
+    readonly userId: number;
+    readonly name: string;
+  };
   readonly text: string;
   readonly essenceTable: string;
   readonly essenceId: number;
-  readonly creationDate: Date;
+  readonly date: Date;
 }

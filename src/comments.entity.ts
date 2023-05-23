@@ -38,5 +38,5 @@ export class Commentary {
     description: 'Дата создания комментария',
   })
   @Column({ type: 'date', nullable: true })
-  creationDate: Date;
+  date: Date;
 }
