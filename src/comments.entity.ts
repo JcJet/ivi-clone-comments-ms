@@ -37,6 +37,6 @@ export class Commentary {
     example: '2019-04-23T18:25:43.511Z',
     description: 'Дата создания комментария',
   })
-  @Column({ type: 'date', nullable: true })
+  @Column({ type: 'timestamp', nullable: true })
   date: Date;
 }
