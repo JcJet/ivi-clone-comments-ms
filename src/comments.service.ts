@@ -14,6 +14,15 @@ export class CommentsService {
     private commentsRepository: Repository<Commentary>,
     @Inject('TO_PROFILES_MS') private toProfilesProxy: ClientProxy,
   ) {}
+  //TODO: подумать, как сделать красивее эти movieId/commentId, когда с фронтом все будет окончательно решено
+  essenceToField(essenceTable: string, essenceId: number) {
+    if (essenceTable == 'movies') {
+      return { movieId: essenceId };
+    }
+    if (essenceTable == 'comments') {
+      return { commentId: essenceId };
+    }
+  }
   async createComment(dto: CommentaryDto): Promise<Commentary> {
     dto['userId'] = dto.author.userId;
     const commentInsertResult = await this.commentsRepository.insert(dto);
@@ -56,7 +65,7 @@ export class CommentsService {
   async getNestedComments(
     comments: Commentary[],
     deleteFoundComments = false,
-    addAuthorFields = true,
+    addditionalFields = true,
   ) {
     for (const comment of comments) {
       const nestedComments = await this.getComments({
@@ -64,8 +73,15 @@ export class CommentsService {
         essenceId: comment.id,
       });
       comment['comments'] = nestedComments;
-      if (addAuthorFields) {
+      if (addditionalFields) {
         comment['author'] = await this.getCommentAuthor(comment);
+        //TODO: убрать idField, если фронт его не будет юзать (добавлено, т.к. нужны были такие квери-параметры,
+        // на случай если и поля такие же понадобятся)
+        const idField = this.essenceToField(
+          comment.essenceTable,
+          comment.essenceId,
+        );
+        comment[Object.keys(idField)[0]] = idField[Object.keys(idField)[0]];
       }
       if (nestedComments.length != 0) {
         await this.getNestedComments(nestedComments);
