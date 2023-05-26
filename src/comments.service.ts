@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@nestjs/common';
+import {HttpException, HttpStatus, Inject, Injectable} from '@nestjs/common';
 import {InjectRepository} from '@nestjs/typeorm';
 import {Repository} from 'typeorm';
 import {Commentary} from './comments.entity';
@@ -23,6 +23,7 @@ export class CommentsService {
       return { commentId: essenceId };
     }
   }
+
   async createComment(dto: CommentaryDto): Promise<Commentary> {
     dto['userId'] = dto.author.userId;
     const commentInsertResult = await this.commentsRepository.insert(dto);
