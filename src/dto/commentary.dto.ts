@@ -6,5 +6,4 @@ export class CommentaryDto {
   readonly text: string;
   readonly essenceTable: string;
   readonly essenceId: number;
-  readonly date: Date;
 }

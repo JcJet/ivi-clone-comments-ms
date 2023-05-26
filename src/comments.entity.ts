@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity(`comments`)
@@ -14,10 +14,6 @@ export class Commentary {
   @ApiProperty({ example: 'любой текст', description: 'Текст комментария' })
   @Column({ type: 'text', default: '' })
   text: string;
-
-  @ApiProperty({ example: '1', description: 'Толичество лайков' })
-  @Column({ type: 'numeric', default: 0 })
-  likes: number;
 
   @ApiProperty({
     example: 'movies',
@@ -37,6 +33,9 @@ export class Commentary {
     example: '2019-04-23T18:25:43.511Z',
     description: 'Дата создания комментария',
   })
-  @Column({ type: 'timestamp', nullable: true })
-  date: Date;
+  @CreateDateColumn()
+  created_at: Date;
+
+  @UpdateDateColumn()
+  updated_at: Date;
 }

@@ -58,9 +58,13 @@ export class CommentsService {
         { userId: comment.userId },
       ),
     );
+    let name = `${profileAuthor?.firstName || ''} ${
+      profileAuthor?.lastName || ''
+    }`;
+    name = name == ' ' ? '' : name;
     return {
       userId: comment.userId,
-      name: `${profileAuthor?.firstName} ${profileAuthor?.lastName}`,
+      name,
     };
   }
   async getNestedComments(
