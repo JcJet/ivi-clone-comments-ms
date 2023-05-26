@@ -30,10 +30,10 @@ export class CommentsService {
     }
   }*/
 
-  async createComment(dto: CommentaryDto): Promise<Commentary> {
+  async createComment(dto: CommentaryDto) {
     dto['userId'] = dto.author.userId;
     const commentInsertResult = await this.commentsRepository.insert(dto);
-    return commentInsertResult.raw[0].id;
+    return commentInsertResult.raw[0];
   }
 
   async editComment(id: number, dto: CommentaryDto): Promise<any> {

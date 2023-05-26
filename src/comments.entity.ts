@@ -33,19 +33,9 @@ export class Commentary {
     example: '2019-04-23T18:25:43.511Z',
     description: 'Дата создания комментария',
   })
-  @CreateDateColumn({
-    transformer: {
-      to(value) {
-        return value;
-      },
-      from(value) {
-        return +value;
-      },
-    },
-  })
-  date: number;
-
-
-/*  @UpdateDateColumn()
-  updated_at: Date;*/
+  @CreateDateColumn()
+  createdAt: Date;
+/*
+  @UpdateDateColumn()
+  updatedAt: Date;*/
 }
