@@ -23,7 +23,7 @@ export class CommentsService {
       return { commentId: essenceId };
     }
   }
-  /*dateToTimestamp(comment: Commentary){
+/*  dateToTimestamp(comment: Commentary){
     if (comment.date) {
       comment['date'] = +comment.date;
       //delete comment['created_at'];
@@ -33,7 +33,7 @@ export class CommentsService {
   async createComment(dto: CommentaryDto): Promise<Commentary> {
     dto['userId'] = dto.author.userId;
     const commentInsertResult = await this.commentsRepository.insert(dto);
-    return commentInsertResult.raw[0];
+    return commentInsertResult.raw[0].id;
   }
 
   async editComment(id: number, dto: CommentaryDto): Promise<any> {
