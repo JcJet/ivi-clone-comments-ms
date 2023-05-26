@@ -1,4 +1,4 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, UpdateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, BeforeInsert } from 'typeorm';
 import { ApiProperty } from '@nestjs/swagger';
 
 @Entity(`comments`)
@@ -34,8 +34,9 @@ export class Commentary {
     description: 'Дата создания комментария',
   })
   @CreateDateColumn()
-  created_at: Date;
+  date: Date;
 
-  @UpdateDateColumn()
-  updated_at: Date;
+
+/*  @UpdateDateColumn()
+  updated_at: Date;*/
 }

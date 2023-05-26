@@ -23,6 +23,12 @@ export class CommentsService {
       return { commentId: essenceId };
     }
   }
+  /*dateToTimestamp(comment: Commentary){
+    if (comment.date) {
+      comment['date'] = +comment.date;
+      //delete comment['created_at'];
+    }
+  }*/
 
   async createComment(dto: CommentaryDto): Promise<Commentary> {
     dto['userId'] = dto.author.userId;
@@ -87,6 +93,7 @@ export class CommentsService {
           comment.essenceId,
         );
         comment[Object.keys(idField)[0]] = idField[Object.keys(idField)[0]];
+        //this.dateToTimestamp(comment);
       }
       if (nestedComments.length != 0) {
         await this.getNestedComments(nestedComments);
