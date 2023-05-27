@@ -22,6 +22,9 @@ export class CommentsService {
     if (essenceTable == 'comments') {
       return { commentId: essenceId };
     }
+    if (essenceTable == 'persons') {
+      return { personId: essenceId };
+    }
   }
 /*  dateToTimestamp(comment: Commentary){
     if (comment.date) {
@@ -92,8 +95,9 @@ export class CommentsService {
           comment.essenceTable,
           comment.essenceId,
         );
-        comment[Object.keys(idField)[0]] = idField[Object.keys(idField)[0]];
-        //this.dateToTimestamp(comment);
+        if (idField) {
+          comment[Object.keys(idField)[0]] = idField[Object.keys(idField)[0]];
+        }
       }
       if (nestedComments.length != 0) {
         await this.getNestedComments(nestedComments);
