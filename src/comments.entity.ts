@@ -34,7 +34,7 @@ export class Commentary {
     description: 'Дата создания комментария',
   })
   @CreateDateColumn()
-  createdAt: Date;
+  date: Date;
 
   @UpdateDateColumn()
   updatedAt: Date;
