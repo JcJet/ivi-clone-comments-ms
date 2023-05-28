@@ -33,9 +33,10 @@ export class Commentary {
     example: '2019-04-23T18:25:43.511Z',
     description: 'Дата создания комментария',
   })
-  @CreateDateColumn()
+  //TODO: nullable убрать потом. Сделано для совместимости со старой базой
+  @CreateDateColumn({ nullable: true })
   date: Date;
 
-  @UpdateDateColumn()
+  @UpdateDateColumn({ nullable: true })
   updatedAt: Date;
 }
