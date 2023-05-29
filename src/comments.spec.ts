@@ -1,7 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import {
-  TypeOrmModule,
-} from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { TypeORMTestingModule } from './test-utils/TypeORMTestingModule';
 import { CommentsService } from './comments.service';
 import { CommentsController } from './comments.controller';
@@ -11,12 +9,11 @@ import { CommentaryDto } from './dto/commentary.dto';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientsModule, Transport } from '@nestjs/microservices';
 import { GetCommentDto } from './dto/get-comment.dto';
-describe('comments Controller Integration', () => {
+describe('comments Controller', () => {
   let controller: CommentsController;
   let service: CommentsService;
   let repository: Repository<Commentary>;
 
-  // Connect to db
   beforeAll(async () => {
     const commentsModule: TestingModule = await Test.createTestingModule({
       imports: [
