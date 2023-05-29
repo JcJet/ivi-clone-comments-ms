@@ -21,7 +21,7 @@ export class CommentsController {
     return await this.commentsService.deleteComment(data.commentId);
   }
   @MessagePattern({ cmd: 'deleteCommentsFromEssence' })
-  async deleteCommentsFromEssence(@Payload() data: { dto: CommentaryDto }) {
+  async deleteCommentsFromEssence(@Payload() data: { dto: GetCommentDto }) {
     return await this.commentsService.deleteCommentsFromEssence(data.dto);
   }
 
@@ -41,5 +41,9 @@ export class CommentsController {
   @MessagePattern({ cmd: 'getCommentsTree' })
   async getCommentsTree(@Payload() data: { dto: GetCommentDto }) {
     return await this.commentsService.getCommentsTree(data.dto);
+  }
+  @MessagePattern({ cmd: 'getCommentById' })
+  async getCommentById(@Payload() data: { commentId: number}): Promise<Commentary> {
+    return await this.commentsService.getCommentById(data.commentId);
   }
 }

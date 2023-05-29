@@ -7,7 +7,8 @@ export const TypeORMTestingModule = (entities: any[]) =>
     port: Number(process.env.POSTGRES_PORT),
     username: process.env.POSTGRES_USER,
     password: process.env.POSTGRES_PASSWORD.toString(),
-    database: process.env.POSTGRES_DB,
+    database: `${process.env.POSTGRES_DB}_tests`,
     entities: [...entities],
-    synchronize: true,
+    synchronize: false,
+    dropSchema: true,
   });

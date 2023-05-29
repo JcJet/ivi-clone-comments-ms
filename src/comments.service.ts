@@ -14,6 +14,10 @@ export class CommentsService {
     private commentsRepository: Repository<Commentary>,
     @Inject('TO_PROFILES_MS') private toProfilesProxy: ClientProxy,
   ) {}
+
+  async getRepository() {
+    return this.commentsRepository;
+  }
   //TODO: подумать, как сделать красивее эти movieId/commentId, когда с фронтом все будет окончательно решено
   essenceToField(essenceTable: string, essenceId: number) {
     if (essenceTable == 'movies') {
@@ -26,23 +30,20 @@ export class CommentsService {
       return { personId: essenceId };
     }
   }
-/*  dateToTimestamp(comment: Commentary){
-    if (comment.date) {
-      comment['date'] = +comment.date;
-      //delete comment['created_at'];
-    }
-  }*/
 
   async createComment(dto: CommentaryDto) {
-    dto['userId'] = dto.author.userId;
-    const commentInsertResult = await this.commentsRepository.insert(dto);
+    const dto_copy = Object.assign({}, dto);
+    dto_copy['userId'] = dto.author.userId;
+    const commentInsertResult = await this.commentsRepository.insert(dto_copy);
     return commentInsertResult.raw[0];
   }
 
   async editComment(id: number, dto: CommentaryDto): Promise<any> {
-    dto['userId'] = dto.author.userId;
-    delete dto.author;
-    return await this.commentsRepository.update(id, dto);
+    //TODO: is it really necessary?
+    const dto_copy = Object.assign({}, dto);
+    dto_copy['userId'] = dto.author.userId;
+    delete dto_copy.author;
+    return await this.commentsRepository.update(id, dto_copy);
   }
 
   async deleteComment(id: number): Promise<any> {
@@ -119,5 +120,9 @@ export class CommentsService {
     const deletedComments = this.getNestedComments(rootComments, true);
     await this.commentsRepository.delete({ ...dto });
     return deletedComments;
+  }
+
+  async getCommentById(id: number) {
+    return await this.commentsRepository.findOneBy({ id });
   }
 }
