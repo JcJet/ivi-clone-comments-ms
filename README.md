@@ -1,26 +1,46 @@
+# Commentaries Microservice for [Ivi Clone backend](https://github.com/srgklmv/ivi-clone-repo)
+
+<p align="center">
+  <img src="https://nestjs.com/img/logo-small.svg" width="200" alt="Nest Logo" />
+</p>
+
+
 ## Description
 
-Commentary microservice for movies project.
-RabbitMQ, NestJS, PostgresSQL, Docker.
+This microservice is a part of [Ivi Clone backend application](https://github.com/srgklmv/ivi-clone-repo).
+Here you can find an instructions for setting up and running microservice.
+
+If you found this repo before exploring the [main repo](https://github.com/srgklmv/ivi-clone-repo),
+I recommend you to explore [main repo](https://github.com/srgklmv/ivi-clone-repo) firstly for understanding how to run the application.
+
+## Requirements
+- Postgres
+- RabbitMQ
+- NestJS
 
 ## Installation
 
 ```bash
-$ npm install
+$ npm i
 ```
 
-## Running the app
+> Note: If you downloaded this repo from main repo script, there is no need to run install command.
+
+## Setting up & running service
+
+### For localhost
+
+1. Create database named **comments** using Postgres.
+2. Set up **.dev.env** file.
+3. Run service!
 
 ```bash
-# development
-$ npm run start
-
 # watch mode
 $ npm run start:dev
-
-# production mode
-$ npm run start:prod
 ```
+
+### For Docker
+> There is no need to set up service for using in Docker. You can continue follow main repo instructions.
 
 ## Test
 
@@ -28,23 +48,11 @@ $ npm run start:prod
 # unit tests
 $ npm run test
 
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
 ```
 
-## Support
+## Author
+[Vladimir Andreev](https://github.com/JcJet)
+## Description
 
-Nest is an MIT-licensed open source project. It can grow thanks to the sponsors and support by the amazing backers. If you'd like to join them, please [read more here](https://docs.nestjs.com/support).
 
-## Stay in touch
 
-- Author - [Kamil Myśliwiec](https://kamilmysliwiec.com)
-- Website - [https://nestjs.com](https://nestjs.com/)
-- Twitter - [@nestframework](https://twitter.com/nestframework)
-
-## License
-
-Nest is [MIT licensed](LICENSE).
