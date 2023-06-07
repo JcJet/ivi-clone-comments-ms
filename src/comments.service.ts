@@ -61,7 +61,7 @@ export class CommentsService {
     }
     return comments;
   }
-  private async getCommentAuthor(
+  async getCommentAuthor(
     comment: Commentary,
   ): Promise<{ userId: number; name: string }> {
     const profileAuthor = await lastValueFrom(
