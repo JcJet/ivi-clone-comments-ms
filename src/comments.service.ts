@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { Inject, Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, UpdateResult, DeleteResult } from 'typeorm';
 import { Commentary } from './comments.entity';
@@ -61,7 +61,7 @@ export class CommentsService {
     }
     return comments;
   }
-  async getCommentAuthor(
+  private async getCommentAuthor(
     comment: Commentary,
   ): Promise<{ userId: number; name: string }> {
     const profileAuthor = await lastValueFrom(
@@ -70,10 +70,13 @@ export class CommentsService {
         { userId: comment.userId },
       ),
     );
-    let name = `${profileAuthor?.firstName || ''} ${
-      profileAuthor?.lastName || ''
-    }`;
-    name = name == ' ' ? '' : name;
+    let name = profileAuthor.nickName;
+    if (!name) {
+      name = `${profileAuthor?.firstName || ''} ${
+        profileAuthor?.lastName || ''
+      }`;
+      name = name == ' ' ? '' : name;
+    }
     return {
       userId: comment.userId,
       name,
