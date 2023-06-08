@@ -116,13 +116,12 @@ export class CommentsService {
   }
   // Получение комментариев с комментариями на них самих
   async getCommentsTree(dto: GetCommentDto): Promise<Commentary[]> {
-    const rootComments = await this.getComments(dto);
+    const rootComments: Commentary[] = await this.getComments(dto);
     return await this.getNestedComments(rootComments);
   }
   async deleteCommentsFromEssence(dto: GetCommentDto): Promise<{
     deletedComments: number;
   }> {
-    //TODO: test it
     const rootComments: Commentary[] = await this.getComments(dto);
     const deletedComments: Commentary[] = await this.getNestedComments(
       rootComments,
