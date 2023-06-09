@@ -43,7 +43,7 @@ $ npm run start:dev
 > There is no need to set up service for using in Docker. You can continue follow main repo instructions.
 
 ## Test
-
+Create database 'comments_tests' in Postgres. The database credentials from .dev.env file will be used.
 ```bash
 # unit tests
 $ npm run test
